@@ -92,8 +92,7 @@ while True:
                         cam.capture('alarm3.jpg', use_video_port=True)
                         print ('Image 3 captured')
 			print ('Images captured')
-                        cam.start_recording(get_file_name())
-                        print ('maile sending...')
+                        print ('mail sending...')
 			mail.send_email()
 		else:
 			cam.stop_recording()
