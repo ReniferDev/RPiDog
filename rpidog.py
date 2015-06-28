@@ -9,39 +9,40 @@ from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
 
 
-def email_init():
+class email:
     smtpUser = 'bfforge2@gmail.com'
     smtpPass = 'prokreacja'
 
     addrTo = 'bartek.renifer@gmail.com'
     addrFrom = smtpUser
 
-    subject = 'Alarm!'
-    header = 'To: ' +addrTo + '\n' + 'From: ' +addrFrom + '\n' + 'Subject: ' + subject 
-    body = 'Wykryto ruch! zdjecie: '
-
     s = smtplib.SMTP('smtp.gmail.com',587)
-    s.ehlo()
-    s.starttls()
-    s.ehlo()
-    s.login(smtpUser, smtpPass)
+    
+    def __init__(self):
+        s.ehlo()
+        s.starttls()
+        s.ehlo()
+        s.login(smtpUser, smtpPass)
 
-    return s
+    def send_email():
+        msg = MIMEMultipart()
+        msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
+        msg.attach(MIMEImage(file("alarm.jpg").read()))
+        msg.attach(MIMEImage(file("alarm2.jpg").read()))
+        msg.attach(MIMEImage(file("alarm3.jpg").read()))
+        s.sendmail(addrFrom, addrTo, msg.as_string())
+        print ('Email sent!')
+        return
+
+
+
 
 
 def get_file_name():
 	return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.h264")
 
 
-def send_email():
-    msg = MIMEMultipart()
-    msg.attach(MIMEText('Wykryto ruch! zdjecie: '))
-    msg.attach(MIMEImage(file("alarm.jpg").read()))
-    msg.attach(MIMEImage(file("alarm2.jpg").read()))
-    msg.attach(MIMEImage(file("alarm3.jpg").read()))
-    s.sendmail(addrFrom, addrTo, msg.as_string())
-    print ('Email sent!')
-    return
+
 
 def cam_init():
     cam = picamera.PiCamera()
@@ -58,7 +59,7 @@ def PIR_init():
 
 cam = cam_init()
 pir = PIR_init()
-s = email_init()
+mail = email()
 
 previous_state = False;
 current_state = False;
@@ -86,7 +87,7 @@ while True:
 			print ('Images captured')
 			cam.wait_recording(5)
 
-			send_email()
+			mail.send_email()
 		else:
 			cam.stop_recording()
 			print ('Recording stopped')
