@@ -10,13 +10,13 @@ from email.MIMEImage import MIMEImage
 
 
 class email:
-    smtpUser = 'bfforge2@gmail.com'
-    smtpPass = 'prokreacja'
-
-    addrTo = 'bartek.renifer@gmail.com'
-    addrFrom = smtpUser
+    addrTo =   'bartek.renifer@gmail.com'
+    addrFrom = 'bfforge2@gmail.com'
 
     def __init__(self):
+        smtpUser = 'bfforge2@gmail.com'
+        smtpPass = 'prokreacja'
+
         s = smtplib.SMTP('smtp.gmail.com',587)
         s.ehlo()
         s.starttls()
