@@ -18,7 +18,7 @@ class email:
 
     
     def __init__(self):
-        self.credentials = open(rpidog.conf)
+        self.credentials = open('rpidog.conf', 'r')
         self.s = smtplib.SMTP('smtp.gmail.com',587)
         self.s.ehlo()
         self.s.starttls()
