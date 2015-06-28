@@ -80,15 +80,9 @@ while True:
 
 		if current_state:
 			print ('Motion detected!')
-			fileName = get_file_name()
-			cam.start_recording(fileName)
-			cam.wait_recording(0.2)
-			print ('Recording started')  
-			cam.capture('alarm1.jpg',use_video_port=True)
-			cam.capture('alarm2.jpg',use_video_port=True)
-			cam.capture('alarm3.jpg',use_video_port=True)
+			cam.capture_sequence(['alarm1.jpg', 'alarm2.jpg', alarm3.jpg])
 			print ('Images captured')
-			cam.wait_recording(5)
+            cam.start_recording(get_file_name())
 			mail.send_email()
 		else:
 			cam.stop_recording()
