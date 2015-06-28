@@ -23,7 +23,8 @@ class email:
         self.s.ehlo()
         self.s.starttls()
         self.s.ehlo()
-        print ( self.credentials.readline() )
+        smtpUser = self.credentials.readline()
+        smtpUser = smtpUser.replace("username = ", "")
         self.s.login(smtpUser, smtpPass)
         
 
