@@ -10,20 +10,20 @@ from email.MIMEImage import MIMEImage
 
 
 class email:
-    addrTo =   'bartek.renifer@gmail.com'
-    addrFrom = 'bfforge2@gmail.com'
-    
+ 
     def __init__(self):
         self.credentials = open('rpidog.conf', 'r')
+        self.smtpUser = self.credentials.readline().replace("username = ", "")
+        self.smtpPass = self.credentials.readline().replace("password = ", "")
+        self.addrTo   = self.credentials.readline().replace("receiver = ", "")
+
         self.s = smtplib.SMTP('smtp.gmail.com',587)
         self.s.ehlo()
         self.s.starttls()
         self.s.ehlo()
-        smtpUser = self.credentials.readline().replace("username = ", "")
-        smtpPass = self.credentials.readline().replace("password = ", "")
-        print (smtpUser)
-        print (smtpPass)
-        self.s.login(smtpUser, smtpPass)
+
+        self.s.login(self.smtpUser, self.smtpPass)
+        return
         
 
     def send_email(self):
@@ -32,7 +32,9 @@ class email:
         msg.attach(MIMEImage(file("alarm1.jpg").read()))
         msg.attach(MIMEImage(file("alarm2.jpg").read()))
         msg.attach(MIMEImage(file("alarm3.jpg").read()))
-        self.s.sendmail(addrFrom, addrTo, msg.as_string())
+
+        self.s.sendmail(self.smtpUser, self.addrTo, msg.as_string())
+
         print ('Email sent!')
         return
 
