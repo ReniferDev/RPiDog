@@ -23,7 +23,7 @@ class email:
         self.s.ehlo()
         self.s.starttls()
         self.s.ehlo()
-        print (self.credentials)
+        print ( self.credentials.readline() )
         self.s.login(smtpUser, smtpPass)
         
 
