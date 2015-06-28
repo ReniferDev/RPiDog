@@ -29,7 +29,7 @@ class email:
         msg.attach(MIMEImage(file("alarm1.jpg").read()))
         msg.attach(MIMEImage(file("alarm2.jpg").read()))
         msg.attach(MIMEImage(file("alarm3.jpg").read()))
-        s.sendmail()
+        s.sendmail(addrFrom, addrTo, msg.as_string())
         print ('Email sent!')
         return
 
