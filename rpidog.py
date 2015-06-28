@@ -16,9 +16,8 @@ class email:
     addrTo = 'bartek.renifer@gmail.com'
     addrFrom = smtpUser
 
-    s = smtplib.SMTP('smtp.gmail.com',587)
-    
     def __init__(self):
+        s = smtplib.SMTP('smtp.gmail.com',587)
         s.ehlo()
         s.starttls()
         s.ehlo()
@@ -27,7 +26,7 @@ class email:
     def send_email():
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
-        msg.attach(MIMEImage(file("alarm.jpg").read()))
+        msg.attach(MIMEImage(file("alarm1.jpg").read()))
         msg.attach(MIMEImage(file("alarm2.jpg").read()))
         msg.attach(MIMEImage(file("alarm3.jpg").read()))
         s.sendmail(addrFrom, addrTo, msg.as_string())
@@ -81,7 +80,7 @@ while True:
 			cam.start_recording(fileName)
 			cam.wait_recording(0.1)
 			print ('Recording started')  
-			cam.capture('alarm.jpg',use_video_port=True)
+			cam.capture('alarm1.jpg',use_video_port=True)
 			cam.capture('alarm2.jpg',use_video_port=True)
 			cam.capture('alarm3.jpg',use_video_port=True)
 			print ('Images captured')
