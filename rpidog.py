@@ -17,13 +17,9 @@ class email:
         smtpUser = 'bfforge2@gmail.com'
         smtpPass = 'prokreacja'
 
-        s = smtplib.SMTP('smtp.gmail.com',587)
-        s.ehlo()
-        s.starttls()
-        s.ehlo()
-        s.login(smtpUser, smtpPass)
+        
 
-    def send_email():
+    def send_email(s):
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
         msg.attach(MIMEImage(file("alarm1.jpg").read()))
@@ -34,7 +30,11 @@ class email:
         return
 
 
-
+s = smtplib.SMTP('smtp.gmail.com',587)
+s.ehlo()
+s.starttls()
+s.ehlo()
+s.login(smtpUser, smtpPass)
 
 
 def get_file_name():
@@ -86,7 +86,7 @@ while True:
 			print ('Images captured')
 			cam.wait_recording(5)
 
-			mail.send_email()
+			mail.send_email(s)
 		else:
 			cam.stop_recording()
 			print ('Recording stopped')
