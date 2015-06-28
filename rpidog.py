@@ -16,11 +16,16 @@ class email:
     smtpUser = 'bfforge2@gmail.com'
     smtpPass = 'prokreacja'
 
-    s = smtplib.SMTP('smtp.gmail.com',587)
-    s.ehlo()
-    s.starttls()
-    s.ehlo()
-    s.login(smtpUser, smtpPass)
+    
+    def __init__(self):
+        self.credentials = open(rpidog.conf)
+        self.s = smtplib.SMTP('smtp.gmail.com',587)
+        self.s.ehlo()
+        self.s.starttls()
+        self.s.ehlo()
+        print (self.credential)
+        self.s.login(smtpUser, smtpPass)
+        
 
     def send_email(self):
         msg = MIMEMultipart()
@@ -28,7 +33,7 @@ class email:
         msg.attach(MIMEImage(file("alarm1.jpg").read()))
         msg.attach(MIMEImage(file("alarm2.jpg").read()))
         msg.attach(MIMEImage(file("alarm3.jpg").read()))
-        s.sendmail(addrFrom, addrTo, msg.as_string())
+        self.s.sendmail(addrFrom, addrTo, msg.as_string())
         print ('Email sent!')
         return
 
