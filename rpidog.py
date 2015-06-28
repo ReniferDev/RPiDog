@@ -3,14 +3,15 @@ import time
 import picamera
 import datetime
 import smtplib
+import email
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
 
 
 def email_init():
-    smtpUser = 'XXX@gmail.com'
-    smtpPass = 'YYY'
+    smtpUser = 'bfforge2@gmail.com'
+    smtpPass = 'prokreacja'
 
     addrTo = 'bartek.renifer@gmail.com'
     addrFrom = smtpUser
@@ -49,9 +50,9 @@ def cam_init():
     return cam
 
 def PIR_init():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(sensor, GPIO.IN, GPIO.PUD_DOWN)
     pir = 4
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(pir, GPIO.IN, GPIO.PUD_DOWN)
     return pir
 
 
@@ -67,7 +68,7 @@ current_state = False;
 while True:
 	time.sleep(0.1)
 	previous_state = current_state
-	current_state = GPIO.input(sensor)
+	current_state = GPIO.input(pir)
 
 	if current_state != previous_state:
 		new_state = "HIGH" if current_state else "LOW"
