@@ -12,10 +12,6 @@ from email.MIMEImage import MIMEImage
 class email:
     addrTo =   'bartek.renifer@gmail.com'
     addrFrom = 'bfforge2@gmail.com'
-
-    smtpUser = 'bfforge2@gmail.com'
-    smtpPass = 'prokreacja'
-
     
     def __init__(self):
         self.credentials = open('rpidog.conf', 'r')
@@ -23,8 +19,10 @@ class email:
         self.s.ehlo()
         self.s.starttls()
         self.s.ehlo()
-        smtpUser = self.credentials.readline()
-        smtpUser = smtpUser.replace("username = ", "")
+        smtpUser = self.credentials.readline().replace("username = ", "")
+        smtpPass = self.credentials.readline().replace("password = ", "")
+        print (smtpUser)
+        print (smtpPass)
         self.s.login(smtpUser, smtpPass)
         
 
