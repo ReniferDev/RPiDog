@@ -51,6 +51,7 @@ def get_file_name():
 def cam_init():
     cam = picamera.PiCamera()
     cam.resolution = (1920, 1080)
+    cam.fps = 30
     cam.start_preview()
     return cam
 
@@ -68,7 +69,7 @@ mail = email()
 previous_state = False;
 current_state = False;
 
-
+cam.start_preview()
 
 while True:
 	time.sleep(0.1)
@@ -76,14 +77,12 @@ while True:
 	current_state = GPIO.input(pir)
 
 	if current_state != previous_state:
-		new_state = "HIGH" if current_state else "LOW"
-		print("PIR State:  %s" % (new_state))	
 
 		if current_state:
 			print ('Motion detected!')
 			fileName = get_file_name()
 			cam.start_recording(fileName)
-			cam.wait_recording(0.1)
+			cam.wait_recording(0.2)
 			print ('Recording started')  
 			cam.capture('alarm1.jpg',use_video_port=True)
 			cam.capture('alarm2.jpg',use_video_port=True)
