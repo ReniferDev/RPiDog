@@ -22,7 +22,7 @@ class email:
     s.ehlo()
     s.login(smtpUser, smtpPass)
 
-    def send_email():
+    def send_email(self):
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
         msg.attach(MIMEImage(file("alarm1.jpg").read()))
@@ -84,7 +84,6 @@ while True:
 			cam.capture('alarm3.jpg',use_video_port=True)
 			print ('Images captured')
 			cam.wait_recording(5)
-
 			mail.send_email()
 		else:
 			cam.stop_recording()
