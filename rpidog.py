@@ -54,7 +54,16 @@ def cam_init():
     cam.resolution = (1920, 1080)
     cam.fps = 30
     cam.start_preview()
+    time.sleep(2)
     return cam
+
+def cam_high():
+    cam.resolution = (1920, 1080)
+    cam.fps = 30
+
+def cam_low():
+    cam.resolution = (640,480)
+    cam.fps = 5
 
 def PIR_init():
     pir = 4
@@ -70,9 +79,8 @@ mail = email()
 previous_state = False;
 current_state = False;
 
-cam.start_preview()
 cam.start_recording(get_file_name())
-time.sleep(2)
+
 
 while True:
 	previous_state = current_state
@@ -83,12 +91,17 @@ while True:
 		if current_state:
                         print ('Motion detected')
                         cam.stop_recording()
-			cam.capture_sequence(['alarm%2d.jpg' % i for i in range(100)], use_video_port=True)
-                        print ('10 Images captured')
+                        print ('LOWCAM sopped')
+                        cam_high()
+                        print('CAMHIGH selected')
+			cam.capture('alarmtest', use_video_port=True)
+                        print ('Image captured')
                         cam.start_recording(get_file_name())
+                        print ('HIGHCAM started')
                         cam.wait_recording(5)
-                        cam.stop_recording()                       
-			mail.send_email()
+                        cam.stop_recording()
+                        print('HIGHCAM stopped')
+			#mail.send_email()
 			cam.start_recording(get_file_name())
 		else:
 			print ('End of motion')
