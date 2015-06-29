@@ -89,20 +89,21 @@ while True:
 	if current_state != previous_state:
 
 		if current_state:
-                        print ('Motion detected')
+                        timer = time.time()
+                        print ('Motion detected  ' + ": %s seconds " % (time.time() - timer) )
                         cam.stop_recording()
-                        print ('LOWCAM sopped')
+                        print ('LOWCAM sopped  '  + ": %s seconds " % (time.time() - timer))
                         cam_high()
-                        print('CAMHIGH selected')
-			cam.capture('alarmtest', use_video_port=True)
-                        print ('Image captured')
+                        print('CAMHIGH selected  '  + ": %s seconds " % (time.time() - timer))
+			cam.capture('alarmtest.jpg', use_video_port=True)
+                        print ('Image captured  ' + ": %s seconds " % (time.time() - timer))
                         cam.start_recording(get_file_name())
-                        print ('HIGHCAM started')
+                        print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
                         cam.wait_recording(5)
                         cam.stop_recording()
-                        print('HIGHCAM stopped')
+                        print('HIGHCAM stopped  '+ ": %s seconds " % (time.time() - timer))
 			#mail.send_email()
 			cam.start_recording(get_file_name())
 		else:
-			print ('End of motion')
+			print ('End of motion  ' + ": %s seconds " % (time.time() - timer))
 			
