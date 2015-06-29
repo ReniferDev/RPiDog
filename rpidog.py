@@ -83,8 +83,8 @@ while True:
 		if current_state:
                         print ('Motion detected')
                         cam.stop_recording()
-			cam.capture_sequence(['alarm%d.jpg' %i for i in range(1,20)], use_vide_port=True)
-                        print ('20 Images captured')
+			camera.capture_sequence(['alarm%02d.jpg' % i for i in range(10)], use_video_port=True)
+                        print ('10 Images captured')
                         cam.start_recording(get_file_name())
                         cam.wait_recording(5)
                         cam.stop_recording()                       
