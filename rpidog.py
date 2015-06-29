@@ -30,9 +30,9 @@ class email:
         print ('mail sending...')
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
-        msg.attach(MIMEImage(file("alarm1.jpg").read()))
-        msg.attach(MIMEImage(file("alarm2.jpg").read()))
-        msg.attach(MIMEImage(file("alarm3.jpg").read()))
+        msg.attach(MIMEImage(file("alarm0.jpg").read()))
+        msg.attach(MIMEImage(file("alarm9.jpg").read()))
+        msg.attach(MIMEImage(file("alarm19.jpg").read()))
 
         self.s.sendmail(self.smtpUser, self.addrTo, msg.as_string())
 
@@ -83,7 +83,7 @@ while True:
 		if current_state:
                         print ('Motion detected')
                         cam.stop_recording()
-			cam.capture_sequence(['alarm%02d.jpg' % i for i in range(10)], use_video_port=True)
+			cam.capture_sequence(['alarm%2d.jpg' % i for i in range(20)], use_video_port=True)
                         print ('10 Images captured')
                         cam.start_recording(get_file_name())
                         cam.wait_recording(5)
