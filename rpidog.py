@@ -85,7 +85,7 @@ while True:
                         cam.stop_recording()
                         cam.resolution = (1920,1080)
                         cam.fps = 30
-			cam.capture_sequence(['alarm%.jpg' %i for i in range(20)], use_vide_port=True)
+			cam.capture_sequence(['alarm%d.jpg' %i for i in range(1,20)], use_vide_port=True)
                         print ('20 Images captured')
                         cam.start_recording('alarm ' + get_file_name())
                         cam.wait_recording(5)
