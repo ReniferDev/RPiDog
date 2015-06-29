@@ -51,8 +51,8 @@ def get_file_name():
 
 def cam_init():
     cam = picamera.PiCamera()
-    cam.resolution = (640, 480)
-    cam.fps = 5
+    cam.resolution = (1920, 1080)
+    cam.fps = 30
     cam.start_preview()
     return cam
 
@@ -83,17 +83,12 @@ while True:
 		if current_state:
                         print ('Motion detected')
                         cam.stop_recording()
-                        cam.resolution = (1920,1080)
-                        cam.fps = 30
 			cam.capture_sequence(['alarm%d.jpg' %i for i in range(1,20)], use_vide_port=True)
                         print ('20 Images captured')
-                        cam.start_recording('alarm ' + get_file_name())
+                        cam.start_recording(get_file_name())
                         cam.wait_recording(5)
                         cam.stop_recording()                       
 			mail.send_email()
-
-			cam.resolution = (640, 480)
-                        cam.fps = 5
 			cam.start_recording()
 		else:
 			print ('End of motion')
