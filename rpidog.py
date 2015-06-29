@@ -30,9 +30,9 @@ class email:
         print ('mail sending...')
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
-        msg.attach(MIMEImage(file("alarm0.jpg").read()))
-        msg.attach(MIMEImage(file("alarm9.jpg").read()))
-        msg.attach(MIMEImage(file("alarm19.jpg").read()))
+        msg.attach(MIMEImage(file("alarm 0.jpg").read()))
+        msg.attach(MIMEImage(file("alarm 9.jpg").read()))
+        msg.attach(MIMEImage(file("alarm 19.jpg").read()))
 
         self.s.sendmail(self.smtpUser, self.addrTo, msg.as_string())
 
