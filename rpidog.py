@@ -27,6 +27,7 @@ class email:
         
 
     def send_email(self):
+        print ('mail sending...')
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
         msg.attach(MIMEImage(file("alarm1.jpg").read()))
@@ -50,8 +51,8 @@ def get_file_name():
 
 def cam_init():
     cam = picamera.PiCamera()
-    cam.resolution = (1920, 1080)
-    cam.fps = 30
+    cam.resolution = (640, 480)
+    cam.fps = 5
     cam.start_preview()
     return cam
 
@@ -70,32 +71,30 @@ previous_state = False;
 current_state = False;
 
 cam.start_preview()
+cam.start_recording(get_file_name())
+time.sleep(2)
 
 while True:
-	time.sleep(0.1)
 	previous_state = current_state
 	current_state = GPIO.input(pir)
 
 	if current_state != previous_state:
 
 		if current_state:
-			print ('Motion detected!')
-			cam.start_recording(get_file_name())
-			print ('Recording started')
-			cam.wait_recording(0.3)
-			cam.capture('alarm1.jpg', use_video_port=True)
-			print ('Image 1 captured')
-                        cam.wait_recording(1)
-                        cam.capture('alarm2.jpg', use_video_port=True)
-                        print ('Image 2 captured')
-                        cam.wait_recording(1)
-                        cam.capture('alarm3.jpg', use_video_port=True)
-                        print ('Image 3 captured')
-			print ('Images captured')
-                        print ('mail sending...')
+                        print ('Motion detected')
+                        cam.stop_recording()
+                        cam.resolution = (1920,1080)
+                        cam.fps = 30
+			cam.capture_sequence(['alarm%.jpg' %i for i in range(20)], use_vide_port=True)
+                        print ('20 Images captured')
+                        cam.start_recording('alarm ' + get_file_name())
+                        cam.wait_recording(5)
+                        cam.stop_recording()                       
 			mail.send_email()
+
+			cam.resolution = (640, 480)
+                        cam.fps = 5
+			cam.start_recording()
 		else:
-			cam.stop_recording()
-			print ('Recording stopped')
 			print ('End of motion')
 			
