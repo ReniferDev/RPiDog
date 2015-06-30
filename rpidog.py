@@ -31,9 +31,9 @@ class email:
         print ('mail sending...')
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
-        msg.attach(MIMEImage(file("alarm 0.jpg").read()))
-        msg.attach(MIMEImage(file("alarm49.jpg").read()))
-        msg.attach(MIMEImage(file("alarm99.jpg").read()))
+        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm 0.jpg").read()))
+        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm49.jpg").read()))
+        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm99.jpg").read()))
 
         self.s.sendmail(self.smtpUser, self.addrTo, msg.as_string())
 
@@ -118,11 +118,13 @@ while True:
             print ('LOWCAM sopped  ')
             cam_high()
             video_low_profile = False
+            cam.capture_sequence(['/home/pi/RPiDogOutput/Alarms/alarm%02d.jpg' %i for i in range(1, 11)], use_video_port=True)
+            print ('Images captured on micro ')
             cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 11)], use_video_port=True)
-            print ('Images captured  ')
+            print ('Images captured on usb ')
 
-            os.system("sudo avconv -r 1 -i alarm%02d.jpg -r 10 -vcodec libx264 -crf 20 -g 15 alarm.mp4")                          
-            print('Muxing Done')
+            #os.system("sudo avconv -r 1 -i alarm%02d.jpg -r 10 -vcodec libx264 -crf 20 -g 15 alarm.mp4")                          
+            #print('Muxing Done')
             
             #cam.start_recording(get_file_name())
             #print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
