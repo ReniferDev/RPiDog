@@ -105,7 +105,7 @@ rec_timer = time.time()
 
 while True:
     if video_low_profile:
-        if ((time.time() - rec_timer ) > 5):
+        if ((time.time() - rec_timer ) > 15):
             save_video()     
     previous_state = current_state
     current_state = GPIO.input(pir)
