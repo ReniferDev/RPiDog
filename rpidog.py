@@ -58,36 +58,34 @@ def cam_init():
     return cam
 
 def cam_high():
-    global cam
+    global cam, rect_timer, video_low_profile
     cam.resolution = (1920, 1080)
     cam.fps = 30
     
-    global rec_timer
     rec_timer = time.time()
     
-    global video_low_profile
     vieo_low_profile = False
     
     return
 
 def cam_low():
-    global cam
+    global cam, rect_timer, video_low_profile
     cam.resolution = (640,480)
     cam.fps = 5
     
-    global rec_timer
     rec_timer = time.time()
     
-    global video_low_profile
     video_low_profile = True
     
     return
 
 def save_video():
+    global rec_timer
     cam.stop_recording()
+    print('Video saved')
     cam.start_recording(get_file_name())
     
-    global rec_timer
+    
     rec_timer = time.time()
     
     return
