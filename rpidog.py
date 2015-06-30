@@ -118,23 +118,20 @@ while True:
             print ('LOWCAM sopped  ')
             cam_high()
             video_low_profile = False
-            cam.capture_sequence(['/home/pi/RPiDogOutput/Alarms/alarm%02d.jpg' %i for i in range(1, 11)], use_video_port=True)
-            print ('Images captured on micro ')
-            cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 11)], use_video_port=True)
-            print ('Images captured on usb ')
-
-            #os.system("sudo avconv -r 1 -i alarm%02d.jpg -r 10 -vcodec libx264 -crf 20 -g 15 alarm.mp4")                          
-            #print('Muxing Done')
-            
-            #cam.start_recording(get_file_name())
-            #print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
-            #cam.wait_recording(5)
-            #cam.stop_recording()
-            #print('HIGHCAM stopped  '+ ": %s seconds " % (time.time() - timer))
+            cam.capture_sequence(['/home/pi/RPiDogOutput/Alarms/alarm%02d.jpg' %i for i in range(1, 100)], use_video_port=True)
+            print ('Images captured on micro ')         
+            cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
+            print ('HIGHCAM started ')
+            cam.wait_recording(10)
             #mail.send_email()
-            time.sleep(2)
+            cam.stop_recording()
+            cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
+            
+
 	else:
 	    print ('End of motion  ')
+	    cam.stop_recording()
+	    print ('HIGHCAM stopped ')
             cam_low()
             video_low_profile = True
 	    cam.start_recording(get_file_name())
