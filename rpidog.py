@@ -88,7 +88,8 @@ cam.start_recording(get_file_name())
 rec_timer = time.time()
 
 while True:
-    if (time.time() - rec_timer ) > 5:
+    if (time.time() - rec_timer ) > 15:
+        print('Current video length')
         save_video()
             
     previous_state = current_state
@@ -111,10 +112,10 @@ while True:
             #print('HIGHCAM stopped  '+ ": %s seconds " % (time.time() - timer))
 	    #mail.send_email()
             time.sleep(5)
+            rec_timer = time.time()
             
 	else:
 	    print ('End of motion  ' + ": %s seconds " % (time.time() - timer))
-            cam_low()
-            rec_timer = time.time()
+            cam_low()           
 	    cam.start_recording(get_file_name())
 			
