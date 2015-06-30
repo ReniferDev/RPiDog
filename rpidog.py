@@ -92,12 +92,12 @@ cam.start_recording(get_file_name())
 rec_timer = time.time()
 
 while True:
-    if ((time.time() - rec_timer ) > 5) and (video_low_profile==True):
-        print('About to save: ')
-        save_video()
-        print('Video saved')
-        rec_timer = time.time()
-            
+    if video_low_profile:
+         if ((time.time() - rec_timer ) > 5):
+             print('About to save: ')
+             save_video()
+             print('Video saved')
+             rec_timer = time.time()       
     previous_state = current_state
     current_state = GPIO.input(pir)
 
