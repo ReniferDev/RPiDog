@@ -68,7 +68,6 @@ def cam_low():
 def save_video():
     cam.stop_recording()
     cam.start_recording(get_file_name())
-    rec_timer = time.time()
 
 def PIR_init():
     pir = 4
@@ -88,9 +87,10 @@ cam.start_recording(get_file_name())
 rec_timer = time.time()
 
 while True:
-    if (time.time() - rec_timer ) > 15:
+    if (time.time() - rec_timer ) > 5:
         print('Current video length')
         save_video()
+        rec_timer = time.time()
             
     previous_state = current_state
     current_state = GPIO.input(pir)
