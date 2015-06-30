@@ -58,10 +58,12 @@ def cam_init():
     return cam
 
 def cam_high():
+    video_low_profile = False
     cam.resolution = (1920, 1080)
     cam.fps = 30
 
 def cam_low():
+    video_low_profile = True
     cam.resolution = (640,480)
     cam.fps = 5
 
@@ -80,15 +82,15 @@ cam = cam_init()
 pir = PIR_init()
 mail = email()
 
-previous_state = False;
-current_state = False;
+previous_state = False
+current_state = False
+video_low_profile = True
 
 cam.start_recording(get_file_name())
 rec_timer = time.time()
 
 while True:
-    if (time.time() - rec_timer ) > 5:
-        print('Current video length')
+    if ((time.time() - rec_timer ) > 5) and video_low_profile:
         save_video()
         rec_timer = time.time()
             
@@ -111,11 +113,10 @@ while True:
             #cam.stop_recording()
             #print('HIGHCAM stopped  '+ ": %s seconds " % (time.time() - timer))
 	    #mail.send_email()
-            time.sleep(5)
-            rec_timer = time.time()
-            
+            time.sleep(5)            
 	else:
-	    print ('End of motion  ' + ": %s seconds " % (time.time() - timer))
-            cam_low()           
+	    print ('End of motion  ')
+            cam_low()
 	    cam.start_recording(get_file_name())
+	    rec_timer = time.time()
 			
