@@ -116,6 +116,7 @@ while True:
             cam.stop_recording()
             print ('LOWCAM sopped  ')
             cam_high()
+            video_low_profile = False
             cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 3)], use_video_port=True)
             print ('Images captured  ')
             #cam.start_recording(get_file_name())
@@ -128,6 +129,7 @@ while True:
 	else:
 	    print ('End of motion  ')
             cam_low()
+            video_low_profile = True
 	    cam.start_recording(get_file_name())
 
 			
