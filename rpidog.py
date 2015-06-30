@@ -102,7 +102,7 @@ while True:
             cam.stop_recording()
             print ('LOWCAM sopped  ')
             cam_high()
-	    cam.capture_sequence(['alarm%02d.jpg' % i for i in range(1, 100], use_video_port=True)
+	    cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 100)], use_video_port=True)
             print ('Images captured  ')
             #cam.start_recording(get_file_name())
             #print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
