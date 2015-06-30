@@ -69,10 +69,9 @@ def cam_low(video_low_profile, cam, rec_timer):
     cam.fps = 5
     rec_timer = time.time()
 
-def save_video(rec_timer):
+def save_video():
     cam.stop_recording()
-    cam.start_recording(get_file_name())
-    rec_timer = time.time()
+    cam.start_recording(get_file_name()) 
 
 def PIR_init():
     pir = 4
@@ -95,8 +94,9 @@ rec_timer = time.time()
 while True:
     if ((time.time() - rec_timer ) > 5) and (video_low_profile==True):
         print('About to save: ')
-        save_video(rec_timer)
+        save_video()
         print('Video saved')
+        rec_timer = time.time()
             
     previous_state = current_state
     current_state = GPIO.input(pir)
