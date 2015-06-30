@@ -61,28 +61,19 @@ def cam_init():
 def cam_high():
     global cam, rect_timer, video_low_profile
     cam.resolution = (1920, 1080)
-    cam.fps = 30    
-    rec_timer = time.time()   
-    vieo_low_profile = False    
+    cam.fps = 30        
     return
 
 def cam_low():
     global cam, rect_timer, video_low_profile
     cam.resolution = (640,480)
-    cam.fps = 5    
-    rec_timer = time.time()    
-    video_low_profile = True    
+    cam.fps = 5          
     return
 
 def save_video():
-    global rec_timer
     cam.stop_recording()
     print('Video saved')
-    cam.start_recording(get_file_name())
-    
-    
-    rec_timer = time.time()
-    
+    cam.start_recording(get_file_name()
     return
 
 def PIR_init():
@@ -106,34 +97,53 @@ rec_timer = time.time()
 while True:
     if video_low_profile:
         if ((time.time() - rec_timer ) > 15):
-            save_video()     
+            save_video()
+            rec_timer = time.time() 
     previous_state = current_state
     current_state = GPIO.input(pir)
 
     if current_state != previous_state:
         if current_state:
+            ### MOTION TIMER
             alarm_start = time.time()
             print ('Motion detected')
+
+            ### STOPPING RECORDING LOWRES
             cam.stop_recording()
-            print ('LOWCAM sopped  ')
+            print ('LOWCAM sopped')
+
+            ### CHANGING TO HIGHRES
             cam_high()
             video_low_profile = False
-            cam.capture_sequence(['/home/pi/RPiDogOutput/Alarms/alarm%02d.jpg' %i for i in range(1, 100)], use_video_port=True)
-            print ('Images captured on micro ')         
+
+            ### TAKING HIGHRES PICTURES ON SD
+            #cam.capture_sequence(['/home/pi/RPiDogOutput/Alarms/alarm%02d.jpg' %i for i in range(1, 100)], use_video_port=True)
+            cam.capture('/home/pi/RPiDogOutput/Alarms/alarm1.jpg')
+            cam.capture('/home/pi/RPiDogOutput/Alarms/alarm2.jpg')
+            cam.capture('/home/pi/RPiDogOutput/Alarms/alarm3.jpg')
+            print ('Images captured on micro ')
+
+            ### RECORDING HIGHRES SAMPLE
             cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
             print ('HIGHCAM started ')
             cam.wait_recording(10)
             #mail.send_email()
             cam.stop_recording()
+
+            ### RECORDING HIGHRES UNTILL PIR CHANGED            
             cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
             
 
 	else:
+            ### END OF MOTION
 	    print ('End of motion  ')
 	    cam.stop_recording()
 	    print ('HIGHCAM stopped ')
+
+            ### LOWRES CAMERA START
             cam_low()
             video_low_profile = True
 	    cam.start_recording(get_file_name())
+            rec_timer = time.time() 
 
 			
