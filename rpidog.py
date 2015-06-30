@@ -121,7 +121,7 @@ while True:
             cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 50)], use_video_port=True)
             print ('Images captured  ')
 
-            os.System("sudo ffmpeg -r 5 -b 1800 - alarm%02d.jph -vcodec h264 alarm.h264")                          
+            os.system("sudo ffmpeg -r 5 -b 1800 - alarm%02d.jph -vcodec h264 alarm.h264")                          
             print('Muxing Done')
             
             #cam.start_recording(get_file_name())
