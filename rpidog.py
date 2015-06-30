@@ -58,23 +58,38 @@ def cam_init():
     return cam
 
 def cam_high():
-    global cam.resolution = (1920, 1080)
-    global cam.fps = 30
-    global rec_timer = time.time()
-    global video_low_profile = False
+    global cam
+    cam.resolution = (1920, 1080)
+    cam.fps = 30
+    
+    global rec_timer
+    rec_timer = time.time()
+    
+    global video_low_profile
+    vieo_low_profile = False
+    
     return
 
 def cam_low():
-    global cam.resolution = (640,480)
-    global cam.fps = 5
-    global rec_timer = time.time()
-    global video_low_profile = True
+    global cam
+    cam.resolution = (640,480)
+    cam.fps = 5
+    
+    global rec_timer
+    rec_timer = time.time()
+    
+    global video_low_profile
+    video_low_profile = True
+    
     return
 
 def save_video():
     cam.stop_recording()
     cam.start_recording(get_file_name())
-    global rec_timer = time.time() 
+    
+    global rec_timer
+    rec_timer = time.time()
+    
     return
 
 def PIR_init():
