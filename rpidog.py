@@ -73,7 +73,8 @@ def cam_low():
 def save_video():
     cam.stop_recording()
     print('Video saved')
-    cam.start_recording(get_file_name()
+    time.sleep(2)
+    cam.start_recording(get_file_name())
     return
 
 def PIR_init():
