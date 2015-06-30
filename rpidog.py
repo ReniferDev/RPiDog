@@ -4,6 +4,7 @@ import picamera
 import datetime
 import smtplib
 import email
+import os
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
@@ -103,7 +104,7 @@ cam.start_recording(get_file_name())
 rec_timer = time.time()
 
 while True:
-    if video_low_profile==True:
+    if video_low_profile:
         if ((time.time() - rec_timer ) > 5):
             save_video()     
     previous_state = current_state
@@ -117,8 +118,12 @@ while True:
             print ('LOWCAM sopped  ')
             cam_high()
             video_low_profile = False
-            cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 3)], use_video_port=True)
+            cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 50)], use_video_port=True)
             print ('Images captured  ')
+
+            os.System("sudo ffmpeg -r 5 -b 1800 - alarm%02d.jph -vcodec h264 alarm.h264")                          
+            print('Muxing Done')
+            
             #cam.start_recording(get_file_name())
             #print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
             #cam.wait_recording(5)
