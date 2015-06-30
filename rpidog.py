@@ -57,19 +57,22 @@ def cam_init():
     time.sleep(2)
     return cam
 
-def cam_high():
+def cam_high(video_low_profile, cam, rec_timer):
     video_low_profile = False
     cam.resolution = (1920, 1080)
     cam.fps = 30
+    rec_timer = time.time()
 
-def cam_low():
+def cam_low(video_low_profile, cam, rec_timer):
     video_low_profile = True
     cam.resolution = (640,480)
     cam.fps = 5
+    rec_timer = time.time()
 
-def save_video():
+def save_video(rec_timer):
     cam.stop_recording()
     cam.start_recording(get_file_name())
+    rec_timer = time.time()
 
 def PIR_init():
     pir = 4
@@ -92,9 +95,8 @@ rec_timer = time.time()
 while True:
     if ((time.time() - rec_timer ) > 5) and (video_low_profile==True):
         print('About to save: ')
-        save_video()
+        save_video(rec_timer)
         print('Video saved')
-        rec_timer = time.time()
             
     previous_state = current_state
     current_state = GPIO.input(pir)
@@ -107,7 +109,7 @@ while True:
             print ('stop recording inside loop')
             cam.stop_recording()
             print ('LOWCAM sopped  ')
-            cam_high()
+            cam_high(video_low_profile, cam, rec_timer)
 	    cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 100)], use_video_port=True)
             print ('Images captured  ')
             #cam.start_recording(get_file_name())
@@ -119,7 +121,7 @@ while True:
             time.sleep(5)            
 	else:
 	    print ('End of motion  ')
-            cam_low()
+            cam_low(video_low_profile, cam, rec_timer)
 	    cam.start_recording(get_file_name())
-	    rec_timer = time.time()
+
 			
