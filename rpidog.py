@@ -118,10 +118,10 @@ while True:
             print ('LOWCAM sopped  ')
             cam_high()
             video_low_profile = False
-            cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 50)], use_video_port=True)
+            cam.capture_sequence(['alarm%02d.jpg' %i for i in range(1, 6)], use_video_port=True)
             print ('Images captured  ')
 
-            os.system("sudo avconv -r 3 -i alarm%02d.jpg -r 10 -vcodec libx264 -crf 20 -g 15 alarm.mp4")                          
+            os.system("sudo avconv -r 1 -i alarm%02d.jpg -r 10 -vcodec libx264 -crf 20 -g 15 alarm.mp4")                          
             print('Muxing Done')
             
             #cam.start_recording(get_file_name())
