@@ -62,16 +62,19 @@ def cam_high(video_low_profile, cam, rec_timer):
     cam.resolution = (1920, 1080)
     cam.fps = 30
     rec_timer = time.time()
+    return
 
 def cam_low(video_low_profile, cam, rec_timer):
     video_low_profile = True
     cam.resolution = (640,480)
     cam.fps = 5
     rec_timer = time.time()
+    return
 
 def save_video():
     cam.stop_recording()
-    cam.start_recording(get_file_name()) 
+    cam.start_recording(get_file_name())
+    return
 
 def PIR_init():
     pir = 4
