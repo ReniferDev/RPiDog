@@ -123,7 +123,7 @@ while True:
             cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
             print ('HIGHCAM started ')
             cam.wait_recording(10)
-            mail.send_email()
+            #mail.send_email()
             cam.stop_recording()
             cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
             
