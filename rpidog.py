@@ -51,8 +51,8 @@ def get_file_name():
 
 def cam_init():
     cam = picamera.PiCamera()
-    cam.resolution = (1920, 1080)
-    cam.fps = 30
+    cam.resolution = (640,480)
+    cam.fps = 5
     cam.start_preview()
     time.sleep(2)
     return cam
@@ -64,6 +64,11 @@ def cam_high():
 def cam_low():
     cam.resolution = (640,480)
     cam.fps = 5
+
+def save_video():
+    cam.stop_recording()
+    cam.start_recording(get_file_name())
+    rec_timer = time.time()
 
 def PIR_init():
     pir = 4
@@ -80,30 +85,36 @@ previous_state = False;
 current_state = False;
 
 cam.start_recording(get_file_name())
-
+rec_timer = time.time()
 
 while True:
-	previous_state = current_state
-	current_state = GPIO.input(pir)
+    if (time.time() - rec_timer ) > 5:
+        save_video()
+            
+    previous_state = current_state
+    current_state = GPIO.input(pir)
 
-	if current_state != previous_state:
+    if current_state != previous_state:
 
-		if current_state:
-                        timer = time.time()
-                        print ('Motion detected  ' + ": %s seconds " % (time.time() - timer) )
-                        cam.stop_recording()
-                        print ('LOWCAM sopped  '  + ": %s seconds " % (time.time() - timer))
-                        cam_high()
-                        print('CAMHIGH selected  '  + ": %s seconds " % (time.time() - timer))
-			cam.capture('alarmtest.jpg', use_video_port=True)
-                        print ('Image captured  ' + ": %s seconds " % (time.time() - timer))
-                        cam.start_recording(get_file_name())
-                        print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
-                        cam.wait_recording(5)
-                        cam.stop_recording()
-                        print('HIGHCAM stopped  '+ ": %s seconds " % (time.time() - timer))
-			#mail.send_email()
-			cam.start_recording(get_file_name())
-		else:
-			print ('End of motion  ' + ": %s seconds " % (time.time() - timer))
+        if current_state:
+            alarm_start = time.time()
+            print ('Motion detected')
+            cam.stop_recording()
+            print ('LOWCAM sopped  ')
+            cam_high()
+	    cam.capture_sequence(['alarm%02d.jpg' % i for i in range(1, 100], use_video_port=True)
+            print ('Images captured  ')
+            #cam.start_recording(get_file_name())
+            #print ('HIGHCAM started  '+ ": %s seconds " % (time.time() - timer))
+            #cam.wait_recording(5)
+            #cam.stop_recording()
+            #print('HIGHCAM stopped  '+ ": %s seconds " % (time.time() - timer))
+	    #mail.send_email()
+            time.sleep(5)
+            
+	else:
+	    print ('End of motion  ' + ": %s seconds " % (time.time() - timer))
+            cam_low()
+            rec_timer = time.time()
+	    cam.start_recording(get_file_name())
 			
