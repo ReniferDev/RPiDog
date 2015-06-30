@@ -60,23 +60,17 @@ def cam_init():
 def cam_high():
     global cam, rect_timer, video_low_profile
     cam.resolution = (1920, 1080)
-    cam.fps = 30
-    
-    rec_timer = time.time()
-    
-    vieo_low_profile = False
-    
+    cam.fps = 30    
+    rec_timer = time.time()   
+    vieo_low_profile = False    
     return
 
 def cam_low():
     global cam, rect_timer, video_low_profile
     cam.resolution = (640,480)
-    cam.fps = 5
-    
-    rec_timer = time.time()
-    
-    video_low_profile = True
-    
+    cam.fps = 5    
+    rec_timer = time.time()    
+    video_low_profile = True    
     return
 
 def save_video():
@@ -109,7 +103,7 @@ cam.start_recording(get_file_name())
 rec_timer = time.time()
 
 while True:
-    if video_low_profile:
+    if video_low_profile==True:
         if ((time.time() - rec_timer ) > 5):
             save_video()     
     previous_state = current_state
