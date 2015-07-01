@@ -92,8 +92,10 @@ previous_state = False
 current_state = False
 video_low_profile = True
 
-cam.start_recording(get_file_name())
 rec_timer = time.time()
+cam.start_recording(get_file_name())
+cam.wait_recording(15)
+
 
 while True:
     if video_low_profile:
