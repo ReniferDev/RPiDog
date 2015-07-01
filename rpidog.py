@@ -31,9 +31,9 @@ class email:
         print ('mail sending...')
         msg = MIMEMultipart()
         msg.attach(MIMEText('Wykryto ruch! zdjecia: '))
-        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm 0.jpg").read()))
-        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm49.jpg").read()))
-        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm99.jpg").read()))
+        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm1.jpg").read()))
+        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm2.jpg").read()))
+        msg.attach(MIMEImage(file("/home/pi/RPiDogOutput/Alarms/alarm3.jpg").read()))
 
         self.s.sendmail(self.smtpUser, self.addrTo, msg.as_string())
 
@@ -54,7 +54,7 @@ def cam_init():
     cam = picamera.PiCamera()
     cam.resolution = (640,480)
     cam.fps = 5
-    cam.start_preview()
+    #cam.start_preview()
     time.sleep(2)
     return cam
 
@@ -92,14 +92,18 @@ previous_state = False
 current_state = False
 video_low_profile = True
 
-cam.start_recording(get_file_name())
 rec_timer = time.time()
+cam.start_recording(get_file_name())
+cam.wait_recording(2)
+
 
 while True:
+    cam.wait_recording(0.5)
     if video_low_profile:
         if ((time.time() - rec_timer ) > 15):
             save_video()
-            rec_timer = time.time() 
+            rec_timer = time.time()
+ 
     previous_state = current_state
     current_state = GPIO.input(pir)
 
@@ -127,24 +131,37 @@ while True:
             ### RECORDING HIGHRES SAMPLE
             cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
             print ('HIGHCAM started ')
-            cam.wait_recording(10)
+            cam.wait_recording(5)
+	    cam.stop_recording()
+
+	    ### SENDING NOTIFICATIONS
+	    #print ('sending notifications ')
             #mail.send_email()
-            cam.stop_recording()
+	    #print ('email sent ')
+            
 
             ### RECORDING HIGHRES UNTILL PIR CHANGED            
             cam.start_recording('/home/pi/RPiDogOutput/Alarms/' + get_file_name())
+	    cam.wait_recording(2)
+	    print ('sending notifications ')
+	    mail.send_email()
+	    print ('email sent ')
+	    cam.wait_recording(10)
+	    cam.stop_recording()
+	    print ('HIGHCAM stopped ')
+
+	    ### LOWRES CAMERA START
+            cam_low()
+            video_low_profile = True
+	    cam.start_recording(get_file_name())
+            rec_timer = time.time() 
             
 
 	else:
             ### END OF MOTION
 	    print ('End of motion  ')
-	    cam.stop_recording()
-	    print ('HIGHCAM stopped ')
 
-            ### LOWRES CAMERA START
-            cam_low()
-            video_low_profile = True
-	    cam.start_recording(get_file_name())
-            rec_timer = time.time() 
 
-			
+            
+
+print('stopped')			
